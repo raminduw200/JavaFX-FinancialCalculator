@@ -1,0 +1,19 @@
+.root{
+    -fx-background-color: #1F2833;
+}
+#HelpViewHeading{
+    -fx-text-fill: rgba(102, 252, 241, 0.74);
+    -fx-font-family: "San Francisco";
+    -fx-spacing: 10;
+    -fx-font-weight: bold;
+    -fx-font-size: 35;
+}
+#subHeading{
+    -fx-text-fill: #c5c6c7;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+.label{
+    -fx-text-fill: #c5c6c7;
+    -fx-font-size: 15;
+}

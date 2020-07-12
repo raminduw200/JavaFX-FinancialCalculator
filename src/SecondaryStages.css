@@ -1,0 +1,94 @@
+.root{
+    -fx-background-color: #1F2833;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-pane{
+    -fx-background-color:transparent;
+    -fx-border-color: #c5c6c7;
+    -fx-padding: 10 0 0 0;
+}
+#lblHistory {
+    -fx-text-fill: #c5c6c7;
+}
+#top{
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: #1F2833;
+    -fx-text-fill: #66fcf1;
+}
+#btnCalculate{
+    -fx-text-fill: #66fcf1;
+    -fx-border-color: #66fcf1;
+}
+#btnCalculate:hover{
+    -fx-text-fill: #0b0c10;
+    -fx-border-color: #0b0c10;
+    -fx-border-radius: 20;
+    -fx-background-color: #66fcf1;
+}
+#btnCalculate:pressed{
+    -fx-text-fill: #0b0c10;
+    -fx-border-color: #0b0c10;
+    -fx-border-radius: 20;
+    -fx-background-color: #1F2833;
+}
+#top:hover{
+    -fx-text-fill: #c5c6c7;
+    -fx-background-color: #1F2833;
+}
+.text-field {
+    -fx-background-color: #0b0c10;
+    -fx-font-size: 15;
+    -fx-text-fill: #45A29E;
+    /*-fx-text-fill: #c5c6c7;*/
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 0 40 0 20;
+}
+.text-field:hover {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+.text-field:pressed {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+.button{
+    -fx-background-color: #0b0c10;
+    -fx-border-color: #c5c6c7;
+    -fx-text-fill: #c5c6c7;
+    -fx-background-radius: 20;
+    -fx-border-radius: 12;
+    -fx-font-size: 15;
+}
+#heading{
+    -fx-text-fill: rgba(102, 252, 241, 0.74);
+    -fx-font-family: "San Francisco";
+    -fx-spacing: 10;
+    -fx-font-weight: bold;
+    -fx-font-size: 35;
+}
+#signs{
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+.label{
+    -fx-text-fill: #c5c6c7;
+    -fx-font-size: 15;
+}
+.button:hover{
+    -fx-background-color: #c5c6c7;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0b0c10;
+}
+.button:pressed{
+    -fx-background-color: #797979;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0b0c10;
+}
