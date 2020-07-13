@@ -2,9 +2,12 @@ package com.company;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -21,7 +24,7 @@ public class Loan {
         Stage loanStage = Controller.stagesShow("Loan");
 
 //  -----------------------------Buttons and Labels - Loan-------------------------------
-//        Declare every button which is in the interest saving stage
+//        Declare every button which is in the Loan stage
 
         Button btnBack = buttons("Back",60, btnTxtHeight,0, 0);
         Button btnHelp = buttons("Help",65, btnTxtHeight,1008, 0);
@@ -135,8 +138,6 @@ public class Loan {
                     pmt = parseDouble(txtPMT.getText());
                     r = parseDouble(txtR.getText())/100;
                     t = parseDouble(txtT.getText());
-//                    double x = Math.pow((1 + r / 12), 12 * t);
-//                    a = (pmt * (x-1)) / ((r/12) * x);
                     a =  (pmt / r) * (1 - (1 / Math.pow((1 + r), t)));
                     txtA.setText(String.valueOf(decimalFormatter.format(a)));
                     r*=100;
@@ -150,8 +151,6 @@ public class Loan {
                     t = parseDouble(txtT.getText());
                     r = parseDouble(txtR.getText())/100;
                     a = parseDouble(txtA.getText());
-//                    double x = Math.pow((1 + r / 12), 12 * t);
-//                    pmt = (a * (r/12) * x)/ (x-1);
                     pmt = (a * r) / (1 - (1 / Math.pow((1 + r), t)));
                     txtPMT.setText(String.valueOf(decimalFormatter.format(pmt)));
                     r*=100;
@@ -165,7 +164,6 @@ public class Loan {
                     pmt = parseDouble(txtPMT.getText());
                     r = parseDouble(txtR.getText())/100;
                     a = parseDouble(txtA.getText());
-//                    t = Math.log(((a*r) / (r+pmt)) + (pmt / (r+pmt)))/Math.log(r+1);
                     t = Math.log((pmt / r) / ((pmt / r) - a)) / Math.log(1 + r);
                     r*=100;
                     if ("�".equals(decimalFormatter.format(t))){
@@ -203,7 +201,9 @@ public class Loan {
                             false
                     );
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Controller.warningBox("TextFile not found!", "Please check ..Coursework1/" +
+                            "empFiles/Interest Savings.txt is there. If not create a text file " +
+                            "Loan.txt");
                 }
                 arrayHistory.add(history);
                 lblHistory.setText(String.valueOf(arrayHistory)
@@ -277,13 +277,26 @@ public class Loan {
                 pb.start();
             } catch (IOException e) {
                 Controller.warningBox("Files not Found!","Navigate to ../Coursework1/" +
-                        " see whether corresponding calculator text file is there");
+                        " see whether corresponding calculator text file is there.If not create text file " +
+                        "Loan.txt");
             }
         });
 
 //        Back button
         Controller.stagesBack(btnBack, primaryStage);
 //      -----------------------------------------------------------------------------------
+//      Import a image file from FileInputStream and Set to background with an image view
+        FileInputStream imageFile = null;
+        try {
+            imageFile = new FileInputStream("../Coursework1/Images/texture.png");
+        } catch (FileNotFoundException e) {
+            Controller.warningBox("Files not Found!","Navigate to ../Coursework1/Images" +
+                    " see whether corresponding calculator images are there."
+            );
+        }
+        Image backgroundImg = new Image(imageFile,1090,700,false,false);
+        ImageView backgroundView = new ImageView(backgroundImg);
+        backgroundView.setId("backgroundImg");
 
         AnchorPane loanPane = new AnchorPane();
         Scene loanScene = new Scene(loanPane, 1090, 700);
@@ -294,6 +307,7 @@ public class Loan {
         loanStage.setMaxWidth(1090);
         loanStage.setMaxHeight(700);
         loanPane.getChildren().addAll(
+                backgroundView,
                 lblHead,lblA,lblT,lblR,lblPMT,lblPercentage,lblHistory,
                 txtA,txtT,txtR,txtPMT,lbl$1,lbl$2,lbl$3,
                 btnCalculate,btnBack,btnHelp,btnHistory,numberPad,historyScrollPane

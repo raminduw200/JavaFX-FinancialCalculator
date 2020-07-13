@@ -1,5 +1,7 @@
 package com.company;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -69,14 +71,30 @@ public class NumberPad {
 
     public static void displayNumber(TextField txt){
 //        Functionality of each key.
-//        Appending text for passed parameter (txt) when button is clicked.
-        for (Button btn : keys){
-            if (btn.getText().equals("Delete")){
-                btn.setOnAction(event -> txt.setText(txt.getText().substring(0,txt.getText().length()-1)));
+//        Appending character for passed parameter (txt) when button is clicked.
+        for (Button btn : keys) {
+            if (btn.getText().equals("Delete")) {
+                btn.setOnAction(event -> txt.setText(txt.getText().substring(0, txt.getText().length() - 1)));
             } else if (btn.getText().equals("Clear")) {
                 btn.setOnAction(event -> txt.setText(""));
             } else if (btn.getText().equals("-")) {
-                btn.setOnAction(event -> txt.setText("-" + txt.getText()));
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        if (!txt.getText().contains("-")) {
+                            txt.setText("-" + txt.getText());
+                        }
+                    }
+                });
+            } else if (btn.getText().equals(".")) {
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        if (!txt.getText().contains(".")) {
+                            txt.appendText(btn.getText());
+                        }
+                    }
+                });
             } else {
                 btn.setOnAction(event -> txt.appendText(btn.getText()));
             }

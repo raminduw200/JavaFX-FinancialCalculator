@@ -2,9 +2,12 @@ package com.company;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -20,8 +23,8 @@ public class Saving {
 
         Stage savingStage = Controller.stagesShow("Savings");
 
-//  -----------------------------Buttons and Labels - Interest Saving-------------------------------
-        //        Declare every button which is in the interest saving stage
+//  -----------------------------Buttons and Labels - Saving-------------------------------
+        //        Declare every button which is in the  saving stage
 
         Button btnBack = buttons("Back",60, btnTxtHeight,0, 0);
         Button btnHelp = buttons("Help",65, btnTxtHeight,1008, 0);
@@ -148,8 +151,6 @@ public class Saving {
                     t = parseDouble(txtT.getText());
                     r = parseDouble(txtR.getText())/100;
                     p = parseDouble(txtP.getText());
-//                    double tempA = p*(Math.pow((1+(r/n)),n*t));
-//                    a = tempA + pmt * ( ((tempA/p)-1) / (r/n) );
                     a = (p * Math.pow((1+(r/n)), (n*t))) + (pmt * ((Math.pow((1+(r/n)), (n * t))-1) / (r/n)) );
                     txtA.setText(String.valueOf(decimalFormatter.format(a)));
                     r*=100;
@@ -164,8 +165,6 @@ public class Saving {
                     r = parseDouble(txtR.getText())/100;
                     p = parseDouble(txtP.getText());
                     a = parseDouble(txtA.getText());
-//                    double tempA = p*(Math.pow((1+(r/n)),n*t));
-//                    pmt = (a - tempA)/(((tempA/p)-1)/(r/n));
                     pmt = (a - (p * Math.pow((1+(r/n)), (n*t)))) / ((Math.pow((1+(r/n)), (n*t))-1) / (r/n));
                     txtPMT.setText(String.valueOf(decimalFormatter.format(pmt)));
                     r*=100;
@@ -180,7 +179,6 @@ public class Saving {
                     p = parseDouble(txtP.getText());
                     a = parseDouble(txtA.getText());
                     pmt = parseDouble(txtPMT.getText());
-//                    t = Math.log((a * (r/n) + pmt) / (p * (r/n) + pmt))/(n * Math.log(1 + (r/n)));
                     t = Math.log(((((r * a) / n) + pmt) / (((p * r) / n) + pmt))) / (n * Math.log(1 + (r/n)));
                     txtT.setText(String.valueOf(decimalFormatter.format(t)));
                     r*=100;
@@ -195,8 +193,6 @@ public class Saving {
                     t = parseDouble(txtT.getText());
                     a = parseDouble(txtA.getText());
                     pmt = parseDouble(txtPMT.getText());
-//                    double temp = Math.pow(( 1+(r/n)) , n*t );
-//                    p = (a - pmt * ((temp-1) / (r/n)))/ temp;
                     p = (a - (pmt * ((Math.pow((1 + (r/n)), n * t) - 1) / (r/n))))/ (Math.pow((1 + (r/n)), n * t));
                     txtP.setText(String.valueOf(decimalFormatter.format(p)));
                     r*=100;
@@ -232,7 +228,9 @@ public class Saving {
                             false
                     );
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Controller.warningBox("TextFile not found!", "Please check ..Coursework1/" +
+                            "empFiles/Interest Savings.txt is there. If not create a text file " +
+                            "Savings.txt");
                 }
                 arrayHistory.add(history);
                 lblHistory.setText(String.valueOf(arrayHistory)
@@ -315,13 +313,27 @@ public class Saving {
                 pb.start();
             } catch (IOException e) {
                 Controller.warningBox("Files not Found!","Navigate to ../Coursework1/" +
-                        " see whether corresponding calculator text file is there");
+                        " see whether corresponding calculator text file is there. If not create text file " +
+                        "Savings.txt"
+                );
             }
         });
 
 //        Back button
         Controller.stagesBack(btnBack, primaryStage);
 //      -----------------------------------------------------------------------------------
+//      Import a image file from FileInputStream and Set to background with an image view
+        FileInputStream imageFile = null;
+        try {
+            imageFile = new FileInputStream("../Coursework1/Images/texture.png");
+        } catch (FileNotFoundException e) {
+            Controller.warningBox("Files not Found!","Navigate to ../Coursework1/Images" +
+                    " see whether corresponding calculator images are there."
+            );
+        }
+        Image backgroundImg = new Image(imageFile,1090,700,false,false);
+        ImageView backgroundView = new ImageView(backgroundImg);
+        backgroundView.setId("backgroundImg");
 
         AnchorPane savingPane = new AnchorPane();
         Scene savingScene = new Scene(savingPane,1090, 700);
@@ -332,6 +344,7 @@ public class Saving {
         savingStage.setMaxWidth(1090);
         savingStage.setMaxHeight(700);
         savingPane.getChildren().addAll(
+                backgroundView,
                 lblHead,lblA,lblT,lblPMT,lblR,lblP,lblPercentage,lblHistory,
                 txtA,txtPMT,txtT,txtR,txtP,lbl$1,lbl$2,lbl$3,lbl$4,
                 btnCalculate,btnBack,btnHelp,btnHistory,numberPad,historyScrollPane

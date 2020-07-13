@@ -79,21 +79,21 @@ public class Controller {
 
     //  method to declare a warning box with customised message - Alert box.
     public static void warningBox(String headerText,String contentText){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setAlertType(Alert.AlertType.ERROR);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
-        alert.show();
+        Alert alertBox = new Alert(Alert.AlertType.ERROR);
+        alertBox.setAlertType(Alert.AlertType.ERROR);
+        alertBox.setHeaderText(headerText);
+        alertBox.setContentText(contentText);
+        alertBox.show();
     }
 
     //  method to write in a text file.
     public static void writeFile(String fileName, String historyContent, boolean appendValue) throws IOException {
-        //        Write into a file - Character Stream
-        File file = new File("../Coursework1/"+fileName);
+    //  Write into a file - Character Stream
+        File txtFile = new File("../Coursework1/"+fileName);
         FileWriter fw = null;
         PrintWriter pw = null;
         try{
-            fw = new FileWriter(file, appendValue);
+            fw = new FileWriter(txtFile, appendValue);
             pw = new PrintWriter(fw, true);
             pw.print(historyContent);
         } catch (FileNotFoundException e) {
@@ -104,33 +104,14 @@ public class Controller {
             e.printStackTrace();
         } finally {
             fw.close();
-            pw.close(); //Close will automatically flush.
+            pw.close();
         }
     }
 
     //  method to read from a text file
     public static String readFile(String fileName) throws FileNotFoundException {
-        File file = new File("../Coursework1/tempFiles/"+fileName);
-        Scanner sc = new Scanner(file);
+        File txtFile = new File("../Coursework1/tempFiles/"+fileName);
+        Scanner sc = new Scanner(txtFile);
         return sc.nextLine();
     }
 }
-//A = FV
-//P = Start Principle
-//r = interest rate
-//n = PMT
-//t = N (# of periods)
-
-//A = Future Value (FV)
-//N = Number of Periods (N)
-//P = Principal Amount
-//T Time
-//R = Interest Rate
-
-/*
-writeFile method warning
-check formula of mortgage/Fixed Deposit calculator
- */
-/*
-Add additional details to help view
- */

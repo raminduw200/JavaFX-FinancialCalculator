@@ -2,9 +2,12 @@ package com.company;
 
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -122,7 +125,7 @@ public class InterestSaving {
                     " see whether corresponding calculator text file is there");
         }
 
-//        Store history data temporary in an array
+//      Array for Store history data temporary
         ArrayList<String> arrayHistory = new ArrayList<>();
 
 //        Calculation
@@ -191,7 +194,7 @@ public class InterestSaving {
                                 "(Example : If you want to find interest rate, keep that field empty");
             }
 
-//              -----------------------------------------History Scroll Pane----------------------------------
+//              -----------------------------------------History - Scroll Pane----------------------------------
             if (flag) {
                 String history =
                         "\t---------------- " + dateFormatter.format(date) + " -----------------" + "\n\t"
@@ -210,7 +213,9 @@ public class InterestSaving {
                             false
                     );
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Controller.warningBox("TextFile not found!", "Please check ..Coursework1/" +
+                            "empFiles/Interest Savings.txt is there. If not create a text file Interest " +
+                            "Savings.txt");
                 }
                 arrayHistory.add(history);
                 lblHistory.setText(String.valueOf(arrayHistory)
@@ -287,13 +292,26 @@ public class InterestSaving {
                 pb.start();
             } catch (IOException e) {
                 Controller.warningBox("Files not Found!","Navigate to ../Coursework1/" +
-                        " see whether corresponding calculator text file is there");
+                        " see whether corresponding calculator text file is there. If not create text file " +
+                        "Interest Savings.txt");
             }
         });
 
 //        Back button
         Controller.stagesBack(btnBack, primaryStage);
 //      -----------------------------------------------------------------------------------
+//      Import a image file from FileInputStream and Set to background with an image view
+        FileInputStream imageFile = null;
+        try {
+            imageFile = new FileInputStream("../Coursework1/Images/texture.png");
+        } catch (FileNotFoundException e) {
+            Controller.warningBox("Files not Found!","Navigate to ../Coursework1/Images" +
+                    " see whether corresponding calculator images are there."
+            );
+        }
+        Image backgroundImg = new Image(imageFile,1090,700,false,false);
+        ImageView backgroundView = new ImageView(backgroundImg);
+        backgroundView.setId("backgroundImg");
 
         AnchorPane iSPane = new AnchorPane();
         iSPane.setId("iSPane");
@@ -305,6 +323,7 @@ public class InterestSaving {
         iSStage.setMaxWidth(1090);
         iSStage.setMaxHeight(700);
         iSPane.getChildren().addAll(
+                backgroundView,
                 lblHead,lblA,lblT,lblP,lblR,lblPercentage,lblHistory,
                 txtA,txtP,txtT,txtR,lbl$1,lbl$2,lbl$3,
                 btnISCalculate,btnBack,btnHelp,btnHistory,numberPad,historyScrollPane

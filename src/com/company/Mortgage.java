@@ -5,9 +5,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -24,7 +27,7 @@ public class Mortgage {
         Stage mortgageStage = Controller.stagesShow("Mortgage");
 
 //  -----------------------------Buttons and Labels - Mortgage-------------------------------
-//        Declare every button which is in the interest saving stage
+//        Declare every button which is in the Mortgage stage
 
         Button btnBack = buttons("Back",60, btnTxtHeight,0, 0);
         Button btnHelp = buttons("Help",65, btnTxtHeight,1008, 0);
@@ -153,8 +156,7 @@ public class Mortgage {
                     r = parseDouble(txtR.getText());
                     t = parseDouble(txtT.getText());
                     dwnPmt = parseDouble(txtDwnPmt.getText());
-//                    double x = Math.pow((1 + r / 12), 12 * t);
-//                    a = (pmt * (x-1)) / ((r/12) * x);
+//                    a = dwnPmt+ ((n*pmt* (Math.pow((1 +(r/n)), (n * t)) - 1)) / (r * Math.pow((1 +(r/n)), (n*t))));
                     a = dwnPmt + ((n * pmt * (Math.pow((1 + (r / n)), (n * t)) - 1)) / (r * Math.pow((1 + (r / n)), (n * t))));
                     txtA.setText(String.valueOf(decimalFormatter.format(a)));
                     flag = true;
@@ -168,8 +170,6 @@ public class Mortgage {
                     dwnPmt = parseDouble(txtDwnPmt.getText());
                     r = parseDouble(txtR.getText());
                     a = parseDouble(txtA.getText());
-//                    double x = Math.pow((1 + r / 12), 12 * t);
-//                    pmt = (a * (r/12) * x)/ (x-1);
                     pmt = ((a - dwnPmt) * (r / n) * Math.pow((1 + (r / n)), n * t)) / (Math.pow((1 + (r / n)), n * t) - 1);
                     txtPMT.setText(String.valueOf(decimalFormatter.format(pmt)));
                     flag = true;
@@ -183,8 +183,6 @@ public class Mortgage {
                     r = parseDouble(txtR.getText());
                     a = parseDouble(txtA.getText());
                     pmt = parseDouble(txtPMT.getText());
-//                    double x = Math.pow((1 + r / 12), 12 * t);
-//                    pmt = (a * (r/12) * x)/ (x-1);
                     dwnPmt = a - ((n * pmt * (Math.pow((1 + (r / n)), n * t) - 1)) / (r * Math.pow((1 + (r / n)), n * t)));
                     txtDwnPmt.setText(String.valueOf(decimalFormatter.format(dwnPmt)));
                     flag = true;
@@ -198,7 +196,7 @@ public class Mortgage {
                     r = parseDouble(txtR.getText());
                     a = parseDouble(txtA.getText());
                     dwnPmt = parseDouble(txtDwnPmt.getText());
-//                    t = Math.log((1 - (r*a) / pmt)/(Math.log (1+r) * 12));
+//                    t = (Math.log((pmt / (pmt - ((r/n) * (a - dwnPmt)))))) /  (n * Math.log(1 + (r/n)));
                     t = (Math.log((pmt / (pmt - ((r/n) * (a - dwnPmt)))))) /  (n * Math.log(1 + (r/n)));
                     if ("�".equals(decimalFormatter.format(t))){
                         Controller.warningBox("Please enter reasonable values",
@@ -236,7 +234,9 @@ public class Mortgage {
                             false
                     );
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Controller.warningBox("TextFile not found!", "Please check ..Coursework1/" +
+                            "empFiles/Interest Savings.txt is there. If not create a text file " +
+                            "Mortgage.txt");
                 }
                 arrayHistory.add(history);
                 lblHistory.setText(String.valueOf(arrayHistory)
@@ -314,13 +314,27 @@ public class Mortgage {
                 pb.start();
             } catch (IOException e) {
                 Controller.warningBox("Files not Found!","Navigate to ../Coursework1/" +
-                        " see whether corresponding calculator text file is there");
+                        " see whether corresponding calculator text file is there. If not create text file " +
+                        "Mortgage.txt"
+                );
             }
         });
 
 //        Back button
         Controller.stagesBack(btnBack, primaryStage);
 //      -----------------------------------------------------------------------------------
+//      Import a image file from FileInputStream and Set to background with an image view
+        FileInputStream imageFile = null;
+        try {
+            imageFile = new FileInputStream("../Coursework1/Images/texture.png");
+        } catch (FileNotFoundException e) {
+            Controller.warningBox("Files not Found!","Navigate to ../Coursework1/Images" +
+                    " see whether corresponding calculator images are there."
+            );
+        }
+        Image backgroundImg = new Image(imageFile,1090,700,false,false);
+        ImageView backgroundView = new ImageView(backgroundImg);
+        backgroundView.setId("backgroundImg");
 
         AnchorPane mortgagePane = new AnchorPane();
         Scene mortgageScene = new Scene(mortgagePane,1090, 700);
@@ -331,6 +345,7 @@ public class Mortgage {
         mortgageStage.setMaxWidth(1090);
         mortgageStage.setMaxHeight(700);
         mortgagePane.getChildren().addAll(
+                backgroundView,
                 lblHead,lblA,lblT,lblR,lblPMT,lblDwnPmt,lblPercentage,lblHistory,
                 txtA,txtT,txtR,txtPMT,txtDwnPmt,lbl$1,lbl$2,lbl$3,lbl$4,
                 btnCalculate,btnBack,btnHelp,btnHistory,numberPad,historyScrollPane
